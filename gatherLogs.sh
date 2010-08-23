@@ -19,27 +19,27 @@ do
   mkdir -p logs/$host/tmp
 
   # create a zip package with all the logs on remote agent
-  ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR/scenarios; zip -rq logs.zip . -i \*log\*'"
+  ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; zip -rq logs.zip . -i \*log\*'"
 
   # download the newly created zip from agent to local temp directory
-  scp -q $AGENT_USER@$host:$AGENT_DIR/scenarios/logs.zip logs/$host/tmp
+  scp -q $AGENT_USER@$host:$AGENT_DIR/testcases/logs.zip logs/$host/tmp
 
   # delete the zip package on remote agent
-  ssh -n $AGENT_USER@$host eval "'rm $AGENT_DIR/scenarios/logs.zip'"
+  ssh -n $AGENT_USER@$host eval "'rm $AGENT_DIR/testcases/logs.zip'"
 
   # extract the zip package in local temp directory
   unzip -q logs/$host/tmp/logs.zip -d logs/$host/tmp
 
-  # iterate over scenario directories and move all the logs outside of temp directory
-  # each log file needs to be renamed with a suffix of the current scenario name to
-  # ensure that log files from different scenario directories won't overwrite each other
+  # iterate over testcase directories and move all the logs outside of temp directory
+  # each log file needs to be renamed with a suffix of the current testcase name to
+  # ensure that log files from different testcase directories won't overwrite each other
   cd logs/$host/tmp
-  for scenario in *; do
-    if [ -d $scenario ]
+  for testcase in *; do
+    if [ -d $testcase ]
     then
-      cd $scenario/log
+      cd $testcase/log
       for logFile in *; do
-        mv $logFile ../../../$logFile.$scenario
+        mv $logFile ../../../$logFile.$testcase
       done
       cd ../..
     fi

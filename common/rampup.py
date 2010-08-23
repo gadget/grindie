@@ -1,7 +1,7 @@
 from net.grinder.script.Grinder import grinder
 from java.lang import System
 
-# the time (in msec) you want to wait before starting a scenario on the current thread
+# the time (in msec) you want to wait before starting a testcase on the current thread
 BASE_TIME = 300
 
 def __getMaxThread():

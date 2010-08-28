@@ -19,7 +19,7 @@ def getValueByRegEx(response, pattern):
 
 # write the response out to disk
 def logResponse(response):
-  fileName = grinder.getFilenameFactory().createFilename('responselog', '-%d.html' % grinder.runNumber)
+  fileName = grinder.getFilenameFactory().createFilename('responselog', '_%d.html' % grinder.runNumber)
   f = open(fileName, 'w')
   f.write(response.getText())
   f.close()

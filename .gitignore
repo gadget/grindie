@@ -1,2 +1,4 @@
 common/*.class
+logs
 testcases/**/log
+nohup.out

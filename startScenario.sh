@@ -10,5 +10,5 @@ do
   params=`echo $line |cut -d"|" -f2`
   echo "Starting agent: $host ($params)"
   nohup ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR; ./startAgent.sh $params &'" &
-done < settings/agentHosts.conf
+done < settings/scenario.conf
 echo "Done."

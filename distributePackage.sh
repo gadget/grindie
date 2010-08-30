@@ -13,8 +13,8 @@ fi
 
 echo ""
 
-# iterate over unique hosts in settings/agentHosts.conf
-cut -d"|" -f1 settings/agentHosts.conf |sort |uniq |while read host
+# iterate over unique hosts in settings/scenario.conf
+cut -d"|" -f1 settings/scenario.conf |sort |uniq |while read host
 do
   echo "Distributing package to" $host
 

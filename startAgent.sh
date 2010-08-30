@@ -34,6 +34,6 @@ echo "Agent offset: $AGENT_OFFSET"
 echo "Testcase params: [$TESTCASE_PARAM1, $TESTCASE_PARAM2]"
 
 cd testcases/$1
-$JAVA_HOME/bin/java -Dgrinder.processes="$PROCESSES" -Dgrinder.threads="$THREADS" -Dgrinder.consoleHost="$CONSOLE_HOST" -Dgrinder.consolePort="$CONSOLE_PORT" -Dgrinder.jvm="$JAVA_HOME/bin/java" -cp $CLASSPATH net.grinder.Grinder grinder.properties
+$JAVA_HOME/bin/java -Dgrinder.processes="$PROCESSES" -Dgrinder.threads="$THREADS" -Dgrinder.consoleHost="$CONSOLE_HOST" -Dgrinder.consolePort="$CONSOLE_PORT" -Dgrinder.jvm="$JAVA_HOME/bin/java" -Dgrinder.logDirectory=log -cp $CLASSPATH net.grinder.Grinder grinder.properties
 
 cd ../..

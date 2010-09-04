@@ -5,4 +5,4 @@ A bunch of shell and jython scripts on top of the "Grinder":http://grinder.sourc
 Features:
 * more realistic scenarios with the possibility to run different testcases (grinder scripts) on different agent machines parallel
 * automated package distribution
-* automated log maintainance
+* automated log maintenance

@@ -22,24 +22,29 @@ export AGENT_OFFSET=${5:-0}
 export TESTCASE_PARAM1=${6:-none}
 export TESTCASE_PARAM2=${7:-none}
 
+BASE_DIR="`pwd`"
+
+E_USAGE=101
 if [ -z $TESTCASE ] || [ "$TESTCASE" = "-h" ] || [ "$TESTCASE" = "--help" ]
 then
-  echo Usage: ./startAgent.sh [agent_name] [testcase] [processes] [threads] [agent_offset] [testcase_params]
-  exit 1
+  echo -e "Usage: ./startAgent.sh [agent_name [testcase [processes [threads [agent_offset [testcase_params]]]]]]\n"
+  exit $E_USAGE
 fi
 
+E_GRINDER_NOT_FOUND=102
 if [ ! -d $GRINDER_HOME ]
 then
-  echo Grinder cannot be found!
-  echo -get Grinder from http://grinder.sourceforge.net
-  echo -set the GRINDER_HOME variable properly in settings/envProps.sh
-  exit 1
+  echo "Grinder cannot be found!"
+  echo "-get Grinder from http://grinder.sourceforge.net"
+  echo -e "-set the GRINDER_HOME variable properly in settings/envProps.sh\n"
+  exit $E_GRINDER_NOT_FOUND
 fi
 
+E_TESTCASE_NOT_FOUND=103
 if [ ! -d testcases/$TESTCASE ]
 then
-  echo Testcase $TESTCASE cannot be found!
-  exit 1
+  echo -e "Testcase $TESTCASE cannot be found!\n"
+  exit $E_TESTCASE_NOT_FOUND
 fi
 
 echo "Running testcase: $TESTCASE (processes=$PROCESSES / threads=$THREADS)"
@@ -50,6 +55,6 @@ echo "Testcase params: [$TESTCASE_PARAM1, $TESTCASE_PARAM2]"
 cd testcases/$TESTCASE
 $JAVA_HOME/bin/java -Dgrinder.processes="$PROCESSES" -Dgrinder.threads="$THREADS" -Dgrinder.consoleHost="$CONSOLE_HOST" -Dgrinder.consolePort="$CONSOLE_PORT" -Dgrinder.jvm="$JAVA_HOME/bin/java" -Dgrinder.logDirectory="log" -Dgrinder.hostID="$AGENT_NAME" -cp $CLASSPATH net.grinder.Grinder grinder.properties
 
-cd ../..
+cd $BASE_DIR
 
 exit 0

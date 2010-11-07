@@ -9,6 +9,7 @@ process_line() {
   agent_name="agent-$idx"
   host=`echo $line |cut -d"|" -f1`
   params=`echo $line |cut -d"|" -f2`
+
   echo "Starting $agent_name: $host ($params)"
   nohup ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR; ./startAgent.sh $agent_name $params &'" &
 }
@@ -21,6 +22,6 @@ do
   let idx++
   process_line $idx "$line"
 done < settings/scenario.conf
-echo "Done."
 
+echo -e "Done.\n"
 exit 0

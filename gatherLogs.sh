@@ -13,7 +13,7 @@ echo -e "Gathering logs from agent machines with user: $AGENT_USER\n"
 # iterate over unique hosts in settings/scenario.conf
 cut -d"|" -f1 settings/scenario.conf |sort |uniq |while read host
 do
-  echo "Gathering logs from" $host
+  echo "Gathering logs from $host"
 
   # create local temp directory for each host
   mkdir -p logs/$host/tmp
@@ -49,6 +49,12 @@ do
   cd ../../..
   rm -r logs/$host/tmp
 done
-echo "Done."
 
+last_ret=$?
+if [ "0" -ne "$last_ret" ]
+then
+  exit $last_ret
+fi
+
+echo -e "Done.\n"
 exit 0

@@ -27,3 +27,5 @@ do
   eval $RSYNC_COMMAND
 done
 echo "Done."
+
+exit 0

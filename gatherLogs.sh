@@ -50,3 +50,5 @@ do
   rm -r logs/$host/tmp
 done
 echo "Done."
+
+exit 0

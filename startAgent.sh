@@ -4,12 +4,11 @@
 . ./settings/agentProps.sh
 
 #
-# e.g. ./startAgent.sh agent-1 sample 1 4 0 Chuck Norris
-# AGENT_NAME=agent-1
+# e.g. ./startAgent.sh agent-0 sample 1 4 Chuck Norris
+# AGENT_NAME=agent-0
 # TESTCASE=sample
 # PROCESSES=1
 # THREADS=4
-# AGENT_OFFSET=0
 # TESTCASE_PARAM1=Chuck
 # TESTCASE_PARAM2=Norris
 #
@@ -18,16 +17,15 @@ AGENT_NAME=$1
 TESTCASE=$2
 PROCESSES=${3:-1}
 THREADS=${4:-1}
-export AGENT_OFFSET=${5:-0}
-export TESTCASE_PARAM1=${6:-none}
-export TESTCASE_PARAM2=${7:-none}
+export TESTCASE_PARAM1=${5:-none}
+export TESTCASE_PARAM2=${6:-none}
 
 BASE_DIR="`pwd`"
 
 E_USAGE=101
 if [ -z $TESTCASE ] || [ "$TESTCASE" = "-h" ] || [ "$TESTCASE" = "--help" ]
 then
-  echo -e "Usage: ./startAgent.sh [agent_name [testcase [processes [threads [agent_offset [testcase_params]]]]]]\n"
+  echo -e "Usage: ./startAgent.sh [agent_name [testcase [processes [threads [testcase_params]]]]]\n"
   exit $E_USAGE
 fi
 
@@ -49,7 +47,6 @@ fi
 
 echo "Running testcase: $TESTCASE (processes=$PROCESSES / threads=$THREADS)"
 echo "Agent: $AGENT_NAME"
-echo "Agent offset: $AGENT_OFFSET"
 echo "Testcase params: [$TESTCASE_PARAM1, $TESTCASE_PARAM2]"
 
 cd testcases/$TESTCASE

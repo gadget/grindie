@@ -4,6 +4,9 @@ from java.lang import System
 # the time (in msec) you want to wait before starting a testcase on the current thread
 BASE_TIME = 300
 
+# TODO: explain
+AGENT_OFFSET=10000
+
 def __getMaxThread():
   return grinder.getProperties().getInt('grinder.threads', 0)
 
@@ -14,13 +17,12 @@ def initialSleep():
   grinder.sleep(waitTime)
 
 # returns an incremental int value as a uniqueId for the current thread
-# TODO: explain the usage of AGENT_OFFSET
 def getId():
-  agentOffset = System.getenv().get('AGENT_OFFSET')
-  if agentOffset == '':
-    agentOffset = 0
+  agentNumber = grinder.getAgentNumber()
+  if agentNumber < 0:
+    agentNumber = 0
 
-  ind = int(agentOffset) + grinder.processNumber * __getMaxThread() + grinder.threadNumber + 1
+  ind = agentNumber * AGENT_OFFSET + grinder.processNumber * __getMaxThread() + grinder.threadNumber + 1
   return ind
 
 # generate a unique userName with an incremental suffix

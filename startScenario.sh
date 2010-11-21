@@ -4,7 +4,7 @@
 
 process_line() {
   idx=$1
-  line=$2 # e.g. localhost|sample 1 2 0 Chuck Norris
+  line=$2 # e.g. localhost|sample 1 2 Chuck Norris
 
   agent_name="agent-$idx"
   host=`echo $line |cut -d"|" -f1`
@@ -19,8 +19,8 @@ echo -e "Starting all agents with user: $AGENT_USER\n"
 idx=0
 while read line
 do
-  let idx++
   process_line $idx "$line"
+  let idx++
 done < settings/scenario.conf
 
 echo -e "Done.\n"

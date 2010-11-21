@@ -50,7 +50,10 @@ echo "Agent: $AGENT_NAME"
 echo "Testcase params: [$TESTCASE_PARAM1, $TESTCASE_PARAM2]"
 
 cd testcases/$TESTCASE
-$JAVA_HOME/bin/java -Dgrinder.processes="$PROCESSES" -Dgrinder.threads="$THREADS" -Dgrinder.consoleHost="$CONSOLE_HOST" -Dgrinder.consolePort="$CONSOLE_PORT" -Dgrinder.jvm="$JAVA_HOME/bin/java" -Dgrinder.logDirectory="log" -Dgrinder.hostID="$AGENT_NAME" -cp $CLASSPATH net.grinder.Grinder grinder.properties
+$JAVA_HOME/bin/java -Dgrinder.processes="$PROCESSES" -Dgrinder.threads="$THREADS" \
+-Dgrinder.consoleHost="$CONSOLE_HOST" -Dgrinder.consolePort="$CONSOLE_PORT" \
+-Dgrinder.jvm="$JAVA_HOME/bin/java" -Dgrinder.logDirectory="log" \
+-Dgrinder.hostID="$AGENT_NAME" -cp $CLASSPATH net.grinder.Grinder grinder.properties
 
 cd $BASE_DIR
 

@@ -23,27 +23,40 @@ from java.lang import System
 # the time (in msec) you want to wait before starting a testcase on the current thread
 BASE_TIME = 300
 
-# TODO: explain
+#
+# represents the reserved uniqueIds for each agents
+# make sure that this value is big enough to provide correct uniqueness in your scenario
+# e.g.
+# agent-1 is running with 4 processes and 16 threads in each process (64 threads)
+# agent-2 is running with 1 process and 128 threads (128 threads)
+# agent-3 is running with 2 processes and 32 threads in each process (64 threads)
+# in this case you need to set it at least to 128 since agent-2 will need 128 uniqueId
+# that are not used by other agents
+#
+# default value is 10000 (should be enough for most cases)
+#
 AGENT_OFFSET=10000
 
-def __getMaxThread():
+# returns the number of threads specified for the current process
+def __maxThread():
   return grinder.getProperties().getInt('grinder.threads', 0)
 
 # halt the current thread for a time based on threadNumber
 def initialSleep():
-  multiplier = grinder.processNumber * __getMaxThread() + grinder.threadNumber
+  multiplier = grinder.processNumber * __maxThread() + grinder.threadNumber
   waitTime = BASE_TIME * multiplier
   grinder.sleep(waitTime)
 
 # returns an incremental int value as a uniqueId for the current thread
-def getId():
+def threadId():
   agentNumber = grinder.getAgentNumber()
+  # if running with no console
   if agentNumber < 0:
     agentNumber = 0
 
-  ind = agentNumber * AGENT_OFFSET + grinder.processNumber * __getMaxThread() + grinder.threadNumber + 1
+  ind = agentNumber * AGENT_OFFSET + grinder.processNumber * __maxThread() + grinder.threadNumber + 1
   return ind
 
 # generate a unique userName with an incremental suffix
 def generateUserName(base):
-  return base + str(getId())
+  return base + str(threadId())

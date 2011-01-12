@@ -32,7 +32,7 @@ checkRet
 echo -e "Gathering logs from agent machines with user: $AGENT_USER\n"
 
 # iterate over unique hosts in settings/scenario.conf
-cut -d"|" -f1 settings/scenario.conf |sort |uniq |while read host
+cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |while read host
 do
   echo "Gathering logs from $host"
 

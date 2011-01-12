@@ -40,8 +40,11 @@ echo -e "Starting all agents with user: $AGENT_USER\n"
 idx=0
 while read line
 do
-  process_line $idx "$line"
-  let idx++
+  if [ -n "$line" ] && [ "${line:0:1}" != "#" ]
+  then
+    process_line $idx "$line"
+    let idx++
+  fi
 done < settings/scenario.conf
 
 echo -e "Done.\n"

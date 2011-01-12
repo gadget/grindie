@@ -34,7 +34,7 @@ fi
 echo ""
 
 # iterate over unique hosts in settings/scenario.conf
-cut -d"|" -f1 settings/scenario.conf |sort |uniq |while read host
+cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |while read host
 do
   echo "Distributing package to $host"
 

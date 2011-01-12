@@ -20,12 +20,14 @@
 #!/bin/sh
 
 . ./settings/agentProps.sh
+. ./common.sh
 
 DATE_SUFFIX=`date +%Y-%m-%d_%H:%M:%S`
 BACKUP_FILE="logs/backup_$DATE_SUFFIX.zip"
 
 echo "Creating backup of previously gathered logs: $BACKUP_FILE"
 zip -rmq $BACKUP_FILE logs -x \*.zip
+checkRet
 
 echo -e "Gathering logs from agent machines with user: $AGENT_USER\n"
 
@@ -36,18 +38,22 @@ do
 
   # create local temp directory for each host
   mkdir -p logs/$host/tmp
+  checkRet
 
   # create a zip package with all the logs on remote agent
   ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; zip -rq logs.zip . -i \*log\*'"
 
   # download the newly created zip from agent to local temp directory
   scp -q $AGENT_USER@$host:$AGENT_DIR/testcases/logs.zip logs/$host/tmp
+  checkRet
 
   # delete the zip package on remote agent
   ssh -n $AGENT_USER@$host eval "'rm $AGENT_DIR/testcases/logs.zip'"
+  checkRet
 
   # extract the zip package in local temp directory
   unzip -q logs/$host/tmp/logs.zip -d logs/$host/tmp
+  checkRet
 
   # iterate over testcase directories and move all the logs outside of temp directory
   # each log file needs to be renamed with a suffix of the current testcase name to
@@ -63,17 +69,13 @@ do
       cd ../..
     fi
   done
+  checkRet
 
   # finally we can delete the local temp directory
   cd ../../..
   rm -r logs/$host/tmp
+  checkRet
 done
-
-last_ret=$?
-if [ "0" -ne "$last_ret" ]
-then
-  exit $last_ret
-fi
 
 echo -e "Done.\n"
 exit 0

@@ -20,6 +20,7 @@
 #!/bin/sh
 
 . ./settings/agentProps.sh
+. ./common.sh
 
 process_line() {
   idx=$1
@@ -31,6 +32,7 @@ process_line() {
 
   echo "Starting $agent_name: $host ($params)"
   nohup ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR; ./startAgent.sh $agent_name $params &'" &
+  checkRet
 }
 
 echo -e "Starting all agents with user: $AGENT_USER\n"

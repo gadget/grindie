@@ -22,17 +22,18 @@
 . ./settings/agentProps.sh
 . ./common.sh
 
-echo -e "Deleting logs on agent machines with user: $AGENT_USER\n"
-
-# iterate over unique hosts in settings/scenario.conf
-cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |while read host
-do
+process_host() {
+  host=$1
   echo "Deleting logs on $host"
 
   # delete all the log files on remote agent
   ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; rm -fr */log*'"
   checkRet
-done
+}
+
+echo -e "Deleting logs on agent machines with user: $AGENT_USER\n"
+
+iterateOverHosts process_host
 
 echo -e "Done.\n"
 exit 0

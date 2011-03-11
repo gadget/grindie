@@ -33,9 +33,8 @@ fi
 
 echo ""
 
-# iterate over unique hosts in settings/scenario.conf
-cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |while read host
-do
+process_host() {
+  host=$1
   echo "Distributing package to $host"
 
   # create directory for the agent on remote machine (if not exists)
@@ -47,7 +46,9 @@ do
   RSYNC_COMMAND="rsync -r --exclude='*log*' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
   eval $RSYNC_COMMAND
   checkRet
-done
+}
+
+iterateOverHosts process_host
 
 echo -e "Done.\n"
 exit 0

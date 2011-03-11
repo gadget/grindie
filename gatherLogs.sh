@@ -25,15 +25,8 @@
 DATE_SUFFIX=`date +%Y-%m-%d_%H:%M:%S`
 BACKUP_FILE="logs/backup_$DATE_SUFFIX.zip"
 
-echo "Creating backup of previously gathered logs: $BACKUP_FILE"
-zip -rmq $BACKUP_FILE logs -x \*.zip
-checkRet
-
-echo -e "Gathering logs from agent machines with user: $AGENT_USER\n"
-
-# iterate over unique hosts in settings/scenario.conf
-cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |while read host
-do
+process_host() {
+  host=$1
   echo "Gathering logs from $host"
 
   # create local temp directory for each host
@@ -75,7 +68,15 @@ do
   cd ../../..
   rm -r logs/$host/tmp
   checkRet
-done
+}
+
+echo "Creating backup of previously gathered logs: $BACKUP_FILE"
+zip -rmq $BACKUP_FILE logs -x \*.zip
+checkRet
+
+echo -e "Gathering logs from agent machines with user: $AGENT_USER\n"
+
+iterateOverHosts process_host
 
 echo -e "Done.\n"
 exit 0

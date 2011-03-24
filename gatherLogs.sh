@@ -34,14 +34,14 @@ process_host() {
   checkRet
 
   # create a zip package with all the logs on remote agent
-  ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; zip -rq logs.zip . -i \*log\*'"
+  ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; zip -rq logs.zip . -i \*log\*'"
 
   # download the newly created zip from agent to local temp directory
-  scp -q $AGENT_USER@$host:$AGENT_DIR/testcases/logs.zip logs/$host/tmp
+  scp -q -i $AGENT_KEY $AGENT_USER@$host:$AGENT_DIR/testcases/logs.zip logs/$host/tmp
   checkRet
 
   # delete the zip package on remote agent
-  ssh -n $AGENT_USER@$host eval "'rm $AGENT_DIR/testcases/logs.zip'"
+  ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'rm $AGENT_DIR/testcases/logs.zip'"
   checkRet
 
   # extract the zip package in local temp directory

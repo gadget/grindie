@@ -27,7 +27,7 @@ process_host() {
   echo "Deleting logs on $host"
 
   # delete all the log files on remote agent
-  ssh -n $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; rm -fr */log*'"
+  ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; rm -fr */log*'"
   checkRet
 }
 

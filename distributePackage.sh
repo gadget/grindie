@@ -38,12 +38,12 @@ process_host() {
   echo "Distributing package to $host"
 
   # create directory for the agent on remote machine (if not exists)
-  SSH_COMMAND="ssh -n $AGENT_USER@$host 'mkdir -p $AGENT_DIR'"
+  SSH_COMMAND="ssh -n -i $AGENT_KEY $AGENT_USER@$host 'mkdir -p $AGENT_DIR'"
   eval $SSH_COMMAND
   checkRet
 
   # synchronize the content of local (source) and remote (destination) directory
-  RSYNC_COMMAND="rsync -r --exclude='*log*' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
+  RSYNC_COMMAND="rsync -r -z -e \"ssh -i $AGENT_KEY\" --exclude='*log*' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
   eval $RSYNC_COMMAND
   checkRet
 }

@@ -19,16 +19,26 @@
 
 #!/bin/sh
 
+KEYPAIR=$1
+AMI_ID=${2:-"ami-8c1fece5"}
+
+E_USAGE=101
+if [ -z $KEYPAIR ] || [ "$KEYPAIR" = "-h" ] || [ "$KEYPAIR" = "--help" ]
+then
+  echo -e "Usage: ./initCloud.sh [keypair [ami_id]]\n"
+  exit $E_USAGE
+fi
+
+NUM_OF_INSTANCES=`cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |wc -l`
+
 run_instances() {
-  echo "Starting EC2 instances"
-  # FIXME: simple startup of 2 instances with hardcoded ami and keypair for testing purposes
-  ec2-run-instances ami-8c1fece5 -k adam.dobos -n 2
-  ec2-authorize default -p 22
+  echo -e "\nStarting $NUM_OF_INSTANCES EC2 instances"
+  ec2-run-instances $AMI_ID -k $KEYPAIR -n $NUM_OF_INSTANCES > ec2-run-instances.out 2> ec2-run-instances.err
+  ec2-authorize default -p 22 > ec2-authorize.out 2> ec2-authorize.err
 
   echo -n "Waiting for instances to boot"
-  # FIXME: wait for 2 instances to boot and go on
   instCnt=0
-  while [ $instCnt -lt 2 ]
+  while [ $instCnt -lt $NUM_OF_INSTANCES ]
   do
     sleep 2s
     instCnt=`ec2-describe-instances |grep running |grep INSTANCE |wc -l`

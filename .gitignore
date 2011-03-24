@@ -1,4 +1,6 @@
 common/*.class
 logs
+settings/cloud.instances
 testcases/**/log
-nohup.out
+*.out
+*.err

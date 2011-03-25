@@ -20,7 +20,7 @@
 #!/bin/sh
 
 KEYPAIR=$1
-AMI_ID=${2:-"ami-8c1fece5"}
+AMI_ID=${2:-"ami-b1497ec5"}
 
 E_USAGE=101
 if [ -z $KEYPAIR ] || [ "$KEYPAIR" = "-h" ] || [ "$KEYPAIR" = "--help" ]

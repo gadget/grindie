@@ -43,7 +43,7 @@ process_host() {
   checkRet
 
   # synchronize the content of local (source) and remote (destination) directory
-  RSYNC_COMMAND="rsync -r -z -e \"ssh -i $AGENT_KEY\" --exclude='*log*' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
+  RSYNC_COMMAND="rsync -r -z -e \"ssh -i $AGENT_KEY\" --exclude='*log*' --exclude='*.out' --exclude='*.err' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
   eval $RSYNC_COMMAND
   checkRet
 }

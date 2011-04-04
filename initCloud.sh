@@ -19,6 +19,10 @@
 
 #!/bin/sh
 
+SETTINGS_CLOUD="settings/cloud.instances"
+SETTINGS_SCENARIO="settings/scenario.conf"
+SETTINGS_SCENARIO_TMP="settings/scenario.conf.tmp"
+
 KEYPAIR=$1
 AMI_ID=${2:-"ami-b1497ec5"}
 
@@ -29,7 +33,7 @@ then
   exit $E_USAGE
 fi
 
-NUM_OF_INSTANCES=`cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |wc -l`
+NUM_OF_INSTANCES=`cat $SETTINGS_SCENARIO |grep -v '#' |grep -v "^$" |cut -d" " -f1 |sort |uniq |wc -l`
 
 run_instances() {
   echo -e "\nStarting $NUM_OF_INSTANCES EC2 instances"
@@ -48,18 +52,18 @@ run_instances() {
 
 register_instances() {
   echo -e "\nRegistering instances"
-  rm -f settings/cloud.instances
+  rm -f $SETTINGS_CLOUD
   idx=0
   ec2-describe-instances |grep running |grep INSTANCE |cut -f2,4 |while read inst
   do
-    echo -e "inst$idx\t$inst" >> settings/cloud.instances
+    echo -e "inst$idx\t$inst" >> $SETTINGS_CLOUD
     let idx++
   done
 }
 
 prepare_scenario() {
   echo "Preparing scenario to run in EC2"
-  # TODO: implement
+  awk 'NR==FNR{map[$1]=$3;next} {if (length($1)>0 && substr($1,1,1)!="#" && length(map[$1])>0) {$1=map[$1]}}1' $SETTINGS_CLOUD $SETTINGS_SCENARIO > $SETTINGS_SCENARIO_TMP && mv $SETTINGS_SCENARIO_TMP $SETTINGS_SCENARIO
 }
 
 run_instances

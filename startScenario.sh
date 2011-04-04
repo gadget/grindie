@@ -24,11 +24,11 @@
 
 process_line() {
   idx=$1
-  line=$2 # e.g. localhost|sample 1 2 Chuck Norris
+  line=$2 # e.g. localhost sample 1 2 Chuck Norris
 
   agent_name="agent-$idx"
-  host=`echo $line |cut -d"|" -f1`
-  params=`echo $line |cut -d"|" -f2`
+  host=`echo $line |cut -d" " -f1`
+  params=`echo $line |cut -d" " -f2-`
 
   echo "Starting $agent_name: $host ($params)"
   ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'cd $AGENT_DIR; nohup ./startAgent.sh $agent_name $params > $agent_name.out 2> $agent_name.err &'"

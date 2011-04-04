@@ -31,7 +31,7 @@ checkRet() {
 iterateOverHosts() {
   callback=$1
   # iterate over unique hosts in settings/scenario.conf
-  cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d"|" -f1 |sort |uniq |while read host
+  cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d" " -f1 |sort |uniq |while read host
   do
     $callback $host
   done

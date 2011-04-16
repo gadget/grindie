@@ -5,13 +5,13 @@
 #
 
 # host and port of the grinder console
-export CONSOLE_HOST="localhost"
+export CONSOLE_HOST="your.ip"
 export CONSOLE_PORT="6372"
 
 # remote authentication details and directory for the agent machines
-export AGENT_USER="loadtest"
-export AGENT_KEY="~/.ssh/id_rsa"
-export AGENT_DIR="/home/loadtest/loadtest"
+export AGENT_USER="ec2-user"
+export AGENT_KEY="/opt/ec2-api-tools/your.privkey"
+export AGENT_DIR="/home/ec2-user/loadtest"
 
 #
 # global variables that are not used by grindie but could make your life easier

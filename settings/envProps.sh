@@ -11,4 +11,4 @@ export GRINDER_HOME="/opt/grinder-3.4"
 export CLASSPATH="$GRINDER_HOME/lib/grinder.jar"
 
 # path to java runtime directory
-export JAVA_HOME="/usr/lib/jvm/java-6-sun/jre"
+export JAVA_HOME="/usr/lib/jvm/jre"

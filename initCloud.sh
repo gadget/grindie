@@ -33,11 +33,13 @@ then
   exit $E_USAGE
 fi
 
+# the required number of EC2 instances to run the scenario
 NUM_OF_INSTANCES=`cat $SETTINGS_SCENARIO |grep -v '#' |grep -v "^$" |cut -d" " -f1 |sort |uniq |wc -l`
 
 run_instances() {
   echo -e "\nStarting $NUM_OF_INSTANCES EC2 instances"
   ec2-run-instances $AMI_ID -k $KEYPAIR -n $NUM_OF_INSTANCES > ec2-run-instances.out 2> ec2-run-instances.err
+  # allowing ssh access
   ec2-authorize default -p 22 > ec2-authorize.out 2> ec2-authorize.err
 
   echo -n "Waiting for instances to boot"
@@ -51,6 +53,8 @@ run_instances() {
 }
 
 register_instances() {
+  # creating a mapping file with logical identifiers and actual hosts of the EC2 instances
+  # e.g. 'inst0   i-e97dd79f      ec2-46-137-3-225.eu-west-1.compute.amazonaws.com'
   echo -e "\nRegistering instances"
   rm -f $SETTINGS_CLOUD
   idx=0
@@ -62,6 +66,7 @@ register_instances() {
 }
 
 prepare_scenario() {
+  # replacing logical identifiers in the scenario by actual hosts using the previously created mapping file
   echo "Preparing scenario to run in EC2"
   awk 'NR==FNR{map[$1]=$3;next} {if (length($1)>0 && substr($1,1,1)!="#" && length(map[$1])>0) {$1=map[$1]}}1' $SETTINGS_CLOUD $SETTINGS_SCENARIO > $SETTINGS_SCENARIO_TMP && mv $SETTINGS_SCENARIO_TMP $SETTINGS_SCENARIO
 }

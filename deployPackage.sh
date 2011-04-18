@@ -22,7 +22,7 @@
 . ./settings/agentProps.sh
 . ./common.sh
 
-echo "Distributing package to agent machines with user: $AGENT_USER"
+echo "Deploying package to agent machines with user: $AGENT_USER"
 
 RSYNC_KEEPENV=""
 if [ "$1" = "--keepenv" ]
@@ -35,7 +35,7 @@ echo ""
 
 process_host() {
   host=$1
-  echo "Distributing package to $host"
+  echo "Deploying package to $host"
 
   # create directory for the agent on remote machine (if not exists)
   SSH_COMMAND="ssh -n -i $AGENT_KEY $AGENT_USER@$host 'mkdir -p $AGENT_DIR'"

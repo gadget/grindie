@@ -31,22 +31,23 @@ process_host() {
 
   # create local temp directory for each host
   mkdir -p logs/$host/tmp
-  checkRet
+  check_ret
 
   # create a zip package with all the logs on remote agent
   ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; zip -rq logs.zip . -i \*log\*'"
+  check_ret
 
   # download the newly created zip from agent to local temp directory
   scp -q -i $AGENT_KEY $AGENT_USER@$host:$AGENT_DIR/testcases/logs.zip logs/$host/tmp
-  checkRet
+  check_ret
 
   # delete the zip package on remote agent
   ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'rm $AGENT_DIR/testcases/logs.zip'"
-  checkRet
+  check_ret
 
   # extract the zip package in local temp directory
   unzip -q logs/$host/tmp/logs.zip -d logs/$host/tmp
-  checkRet
+  check_ret
 
   # iterate over testcase directories and move all the logs outside of temp directory
   # each log file needs to be renamed with a suffix of the current testcase name to
@@ -62,21 +63,21 @@ process_host() {
       cd ../..
     fi
   done
-  checkRet
+  check_ret
 
   # finally we can delete the local temp directory
   cd ../../..
   rm -r logs/$host/tmp
-  checkRet
+  check_ret
 }
 
 echo "Creating backup of previously gathered logs: $BACKUP_FILE"
 zip -rmq $BACKUP_FILE logs -x \*.zip
-checkRet
+check_ret
 
 echo -e "Gathering logs from agent machines with user: $AGENT_USER\n"
 
-iterateOverHosts process_host
+iterate_over_hosts process_host
 
 echo -e "Done.\n"
 exit 0

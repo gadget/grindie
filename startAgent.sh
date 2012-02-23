@@ -73,7 +73,7 @@ $JAVA_HOME/bin/java -Dgrinder.processes="$PROCESSES" -Dgrinder.threads="$THREADS
 -Dgrinder.consoleHost="$CONSOLE_HOST" -Dgrinder.consolePort="$CONSOLE_PORT" \
 -Dgrinder.jvm="$JAVA_HOME/bin/java" -Dgrinder.logDirectory="log" \
 -Dgrinder.hostID="$AGENT_NAME" -cp $GRINDER_HOME/lib/grinder.jar net.grinder.Grinder grinder.properties
-checkRet
+check_ret
 
 cd $BASE_DIR
 

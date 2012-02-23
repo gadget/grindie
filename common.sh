@@ -19,7 +19,7 @@
 
 #!/bin/sh
 
-checkRet() {
+check_ret() {
   last_ret=$?
   if [ "0" -ne "$last_ret" ]
   then
@@ -28,7 +28,7 @@ checkRet() {
   fi
 }
 
-iterateOverHosts() {
+iterate_over_hosts() {
   callback=$1
   # iterate over unique hosts in settings/scenario.conf
   cat settings/scenario.conf |grep -v '#' |grep -v "^$" |cut -d" " -f1 |sort |uniq |while read host

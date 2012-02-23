@@ -25,6 +25,6 @@ OUT_FILE=${1:-grinder.py}
 
 $JAVA_HOME/bin/java -cp $GRINDER_HOME/lib/grinder.jar net.grinder.TCPProxy \
 -console -http $GRINDER_HOME/etc/httpToJythonScript.xsl > $OUT_FILE
-checkRet
+check_ret
 
 exit 0

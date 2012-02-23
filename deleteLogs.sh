@@ -28,12 +28,12 @@ process_host() {
 
   # delete all the log files on remote agent
   ssh -n -i $AGENT_KEY $AGENT_USER@$host eval "'cd $AGENT_DIR/testcases; rm -fr */log*'"
-  checkRet
+  check_ret
 }
 
 echo -e "Deleting logs on agent machines with user: $AGENT_USER\n"
 
-iterateOverHosts process_host
+iterate_over_hosts process_host
 
 echo -e "Done.\n"
 exit 0

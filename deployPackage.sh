@@ -40,15 +40,15 @@ process_host() {
   # create directory for the agent on remote machine (if not exists)
   SSH_COMMAND="ssh -n -i $AGENT_KEY $AGENT_USER@$host 'mkdir -p $AGENT_DIR'"
   eval $SSH_COMMAND
-  checkRet
+  check_ret
 
   # synchronize the content of local (source) and remote (destination) directory
   RSYNC_COMMAND="rsync -r -z -e \"ssh -i $AGENT_KEY\" --exclude='*log*' --exclude='*.out' --exclude='*.err' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
   eval $RSYNC_COMMAND
-  checkRet
+  check_ret
 }
 
-iterateOverHosts process_host
+iterate_over_hosts process_host
 
 echo -e "Done.\n"
 exit 0

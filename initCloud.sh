@@ -24,7 +24,7 @@ SETTINGS_SCENARIO="settings/scenario.conf"
 SETTINGS_SCENARIO_TMP="settings/scenario.conf.tmp"
 
 KEYPAIR=$1
-AMI_ID=${2:-"ami-b1497ec5"}
+AMI_ID=${2:-"ami-43477e37"}
 
 E_USAGE=101
 if [ -z $KEYPAIR ] || [ "$KEYPAIR" = "-h" ] || [ "$KEYPAIR" = "--help" ]

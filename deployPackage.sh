@@ -22,16 +22,7 @@
 . ./settings/agentProps.sh
 . ./common.sh
 
-echo "Deploying package to agent machines with user: $AGENT_USER"
-
-RSYNC_KEEPENV=""
-if [ "$1" = "--keepenv" ]
-then
-  RSYNC_KEEPENV="--exclude='envProps.sh'"
-  echo "Keeping environment settings (envProps.sh)"
-fi
-
-echo ""
+echo -e "Deploying package to agent machines with user: $AGENT_USER\n"
 
 process_host() {
   host=$1
@@ -43,7 +34,7 @@ process_host() {
   check_ret
 
   # synchronize the content of local (source) and remote (destination) directory
-  RSYNC_COMMAND="rsync -r -z -e \"ssh -i $AGENT_KEY\" --exclude='*log*' --exclude='*.out' --exclude='*.err' $RSYNC_KEEPENV * $AGENT_USER@$host:$AGENT_DIR"
+  RSYNC_COMMAND="rsync -r -z -e \"ssh -i $AGENT_KEY\" --exclude='*log*' --exclude='*.out' --exclude='*.err' * $AGENT_USER@$host:$AGENT_DIR"
   eval $RSYNC_COMMAND
   check_ret
 }

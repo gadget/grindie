@@ -1,8 +1,12 @@
-h2. Grindie to make load tests a bit easier
+h2. Grindie to create easily controlled large scale load tests
 
 A bunch of shell and jython scripts on top of the "Grinder":http://grinder.sourceforge.net framework.
 
 Features:
 * more realistic scenarios with the possibility to run different testcases (grinder scripts) on different agent machines parallel
-* automated package distribution
-* automated log maintenance
+* control scripts and testcases can be automatically deployed on agent machines
+* logs can be retrieved from all the agent machines automatically for further analysis
+* quick and easy ramp up of Amazon EC2 instances
+* pure bash code with no exotic dependencies
+
+For more information please check the "wiki":https://github.com/gadget/grindie/wiki.

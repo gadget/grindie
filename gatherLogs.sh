@@ -59,11 +59,11 @@ process_host() {
       cd $testcase/log
       for logFile in *; do
         mv $logFile ../../../$logFile.$testcase
+        check_ret
       done
       cd ../..
     fi
   done
-  check_ret
 
   # finally we can delete the local temp directory
   cd ../../..

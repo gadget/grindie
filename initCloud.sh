@@ -24,12 +24,13 @@ SETTINGS_SCENARIO="settings/scenario.conf"
 SETTINGS_SCENARIO_TMP="settings/scenario.conf.tmp"
 
 KEYPAIR=$1
-AMI_ID=${2:-"ami-43477e37"}
+GROUP=${2:-"default"}
+AMI_ID=${3:-"ami-43477e37"}
 
 E_USAGE=101
 if [ -z $KEYPAIR ] || [ "$KEYPAIR" = "-h" ] || [ "$KEYPAIR" = "--help" ]
 then
-  echo -e "Usage: ./initCloud.sh [keypair [ami_id]]\n"
+  echo -e "Usage: ./initCloud.sh [keypair [group [ami_id]]]\n"
   exit $E_USAGE
 fi
 
@@ -38,9 +39,7 @@ NUM_OF_INSTANCES=`cat $SETTINGS_SCENARIO |grep -v '#' |grep -v "^$" |cut -d" " -
 
 run_instances() {
   echo -e "\nStarting $NUM_OF_INSTANCES EC2 instances"
-  ec2-run-instances $AMI_ID -k $KEYPAIR -n $NUM_OF_INSTANCES > ec2-run-instances.out 2> ec2-run-instances.err
-  # allowing ssh access
-  ec2-authorize default -p 22 > ec2-authorize.out 2> ec2-authorize.err
+  ec2-run-instances $AMI_ID -g $GROUP -k $KEYPAIR -n $NUM_OF_INSTANCES > ec2-run-instances.out 2> ec2-run-instances.err
 
   echo -n "Waiting for instances to boot"
   instCnt=0

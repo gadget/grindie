@@ -10,7 +10,7 @@ export CONSOLE_PORT="6372"
 
 # authentication details for the agent machines
 export AGENT_USER="ec2-user"
-export AGENT_KEY="/opt/ec2-api-tools/your.privkey"
+export AGENT_KEY="$HOME/.ssh/id_rsa"
 # remote base directory for the grindie package
 export AGENT_DIR="/home/ec2-user/loadtest"
 

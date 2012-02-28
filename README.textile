@@ -1,4 +1,4 @@
-h2. Grindie to create easily controlled large scale load tests
+h2. Grindie to perform easily controlled large scale load tests
 
 A bunch of shell and jython scripts on top of the "Grinder":http://grinder.sourceforge.net framework.
 

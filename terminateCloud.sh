@@ -19,8 +19,11 @@
 
 #!/bin/sh
 
+. ./common.sh
+
 echo -e "\nTerminating EC2 instances"
 ec2-terminate-instances `cat settings/cloud.instances |cut -f2` > ec2-terminate-instances.out 2> ec2-terminate-instances.err
+check_ret
 
 echo -e "Done.\n"
 exit 0

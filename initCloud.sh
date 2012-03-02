@@ -44,7 +44,7 @@ do
     k) KEYPAIR=$OPTARG;;
     g) GROUP=$OPTARG;;
     a) AMI_ID=$OPTARG;;
-    ?) usage; exit $E_INVALID_OPTION;
+    ?) usage; exit $E_INVALID_OPTION;;
   esac
 done
 

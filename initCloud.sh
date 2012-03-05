@@ -48,7 +48,7 @@ do
   esac
 done
 
-E_NO_KEYPAIR=101
+E_NO_KEYPAIR=102
 if [ -z $KEYPAIR ]
 then
   usage

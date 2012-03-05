@@ -22,42 +22,55 @@
 . ./settings/agentProps.sh
 . ./common.sh
 
-#
-# e.g. ./startAgent.sh agent-0 sample 1 4 Chuck Norris
-# AGENT_NAME=agent-0
-# TESTCASE=sample
-# PROCESSES=1
-# THREADS=4
-# TESTCASE_PARAM1=Chuck
-# TESTCASE_PARAM2=Norris
-#
+usage() {
+  echo -e "Usage: $0 [options] [arguments]\n\nOptions:"
+  echo "  -a agent name"
+  echo "  -c testcase (required)"
+  echo "  -p number of processes"
+  echo "  -t number of threads"
+}
 
-AGENT_NAME=$1
-TESTCASE=$2
-PROCESSES=${3:-1}
-THREADS=${4:-1}
-export TESTCASE_PARAM1=${5:-none}
-export TESTCASE_PARAM2=${6:-none}
+AGENT_NAME="singleagent"
+TESTCASE=
+PROCESSES=1
+THREADS=1
+
+E_INVALID_OPTION=101
+while getopts "ha:c:p:t" OPTION
+do
+  case $OPTION in
+    h) usage; exit 0;;
+    a) AGENT_NAME=$OPTARG;;
+    c) TESTCASE=$OPTARG;;
+    p) PROCESSES=$OPTARG;;
+    t) THREADS=$OPTARG;;
+    ?) usage; exit $E_INVALID_OPTION;;
+  esac
+done
+shift $((OPTIND - 1))
+
+export TESTCASE_PARAM1=${1:-none}
+export TESTCASE_PARAM2=${2:-none}
 
 BASE_DIR="`pwd`"
 
-E_USAGE=101
-if [ -z $TESTCASE ] || [ "$TESTCASE" = "-h" ] || [ "$TESTCASE" = "--help" ]
+E_NO_TESTCASE_SPECIFIED=102
+if [ -z $TESTCASE ]
 then
-  echo -e "Usage: ./startAgent.sh [agent_name [testcase [processes [threads [testcase_params]]]]]\n"
-  exit $E_USAGE
+  usage
+  exit $E_NO_TESTCASE_SPECIFIED
 fi
 
-E_GRINDER_NOT_FOUND=102
+E_GRINDER_NOT_FOUND=103
 if [ ! -d $GRINDER_HOME ]
 then
   echo "Grinder cannot be found!"
   echo "-get Grinder from http://grinder.sourceforge.net"
-  echo -e "-set the GRINDER_HOME variable properly in settings/envProps.sh\n"
+  echo -e "-set the GRINDER_HOME variable properly\n"
   exit $E_GRINDER_NOT_FOUND
 fi
 
-E_TESTCASE_NOT_FOUND=103
+E_TESTCASE_NOT_FOUND=104
 if [ ! -d testcases/$TESTCASE ]
 then
   echo -e "Testcase $TESTCASE cannot be found!\n"

@@ -36,7 +36,7 @@ PROCESSES=1
 THREADS=1
 
 E_INVALID_OPTION=101
-while getopts "ha:c:p:t" OPTION
+while getopts "ha:c:p:t:" OPTION
 do
   case $OPTION in
     h) usage; exit 0;;

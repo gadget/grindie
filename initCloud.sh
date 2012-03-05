@@ -37,7 +37,7 @@ GROUP="default"
 AMI_ID="ami-43477e37"
 
 E_INVALID_OPTION=101
-while getopts "hk:g:a" OPTION
+while getopts "hk:g:a:" OPTION
 do
   case $OPTION in
     h) usage; exit 0;;

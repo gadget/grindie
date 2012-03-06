@@ -21,10 +21,34 @@
 
 . ./common.sh
 
-OUT_FILE=${1:-grinder.py}
+TESTCASE=$1
+
+E_NO_TESTCASE_SPECIFIED=101
+if [ -z $TESTCASE ]
+then
+  echo -e "Usage: $0 [testcase]\n"
+  exit $E_NO_TESTCASE_SPECIFIED
+fi
+
+E_TESTCASE_EXISTS=102
+if [ -d testcases/$TESTCASE ]
+then
+  echo -e "Testcase $TESTCASE already exists!\n"
+  exit $E_TESTCASE_EXISTS
+fi
+
+mkdir -p testcases/$TESTCASE
+check_ret
+
+echo -e "grinder.runs=1
+grinder.script=grinder.py
+grinder.numberOfOldLogs=32
+grinder.jvm.arguments=-Xms32M -Xmx128M
+grinder.sleepTimeFactor=1" > testcases/$TESTCASE/grinder.properties
+check_ret
 
 $JAVA_HOME/bin/java -cp $GRINDER_HOME/lib/grinder.jar net.grinder.TCPProxy \
--console -http $GRINDER_HOME/etc/httpToJythonScript.xsl > $OUT_FILE
+-console -http $GRINDER_HOME/etc/httpToJythonScript.xsl > testcases/$TESTCASE/grinder.py
 check_ret
 
 exit 0
